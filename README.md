@@ -8,7 +8,13 @@ Current functionality is limited to committing files to groups of repos simultan
 
 ## Getting Started
 
-TODO
+```
+# Create the file(s) you want to push to all repos
+# Create a .ggm.yml 
+
+# Mount those files in the container, provide a valid token, set DRY_RUN for safety
+docker run -it --rm -v $(pwd):/usr/src/data -e GITLAB_TOKEN="your gitlab token" -e DRY_RUN=true thpdev/ggm:latest
+```
 
 ## Development
 
