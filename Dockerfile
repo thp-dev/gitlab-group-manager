@@ -3,6 +3,7 @@ FROM ruby:2.7-alpine
 ENV DRY_RUN=false
 ENV CI_API_V4_URL=https://gitlab.com/api/v4
 ENV GGM_CONFIG_FILE=.ggm.yaml
+ENV PATH="/usr/src/app/bin:${PATH}"
 
 RUN apk add --no-cache bash
 
@@ -15,5 +16,7 @@ RUN bundle config set without 'development test' \
 
 ADD . .
 
-ENV DRY_RUN=false
-CMD ["bin/ggm.rb"]
+RUN mkdir /usr/src/data 
+WORKDIR /usr/src/data
+
+CMD ["ggm"]

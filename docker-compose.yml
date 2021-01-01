@@ -10,4 +10,5 @@ services:
     environment:
       - CI_API_V4_URL=https://gitlab.com/api/v4
       - GITLAB_TOKEN=$GITLAB_TOKEN
+    working_dir: /usr/src/app
     command: ["sleep", "infinity"]

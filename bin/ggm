@@ -1,0 +1,17 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require_relative '../lib/gitlab_group_manager'
+
+# Requires:
+#   - GITLAB_TOKEN env var
+# Optional:
+#   - CI_API_V4_URL if your gitlab is not cloud hosted (default: https://gitlab.com/api/v4)
+#   - GGM_CONFIG_FILE if your config is not in the current directory (default: ./.ggml.yaml)
+#   - DRY_RUN if you just want to see what would happen, without making any changes (valid values: true/t/yes)
+def main
+  config = GGM::ConfigParser.new(config_file_path: GGM::Env['GGM_CONFIG_FILE' || '.ggm.yaml'])
+  config.apply
+end
+
+main
