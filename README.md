@@ -2,6 +2,7 @@
 
 Apply files, settings and more to groups of Gitlab projects.
 
+Current functionality is limited to committing files to groups of repos simultaneously.
 
 ## Getting Started
 
