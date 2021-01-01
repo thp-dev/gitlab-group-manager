@@ -1,5 +1,7 @@
 # Gitlab Group Manager
 
+![CI](https://github.com/thp-dev/gitlab-group-manager/workflows/CI/badge.svg)
+
 Apply files, settings and more to groups of Gitlab projects.
 
 Current functionality is limited to committing files to groups of repos simultaneously.
