@@ -2,17 +2,31 @@
 
 ![CI](https://github.com/thp-dev/gitlab-group-manager/workflows/CI/badge.svg)
 
-Apply files, settings and more to groups of Gitlab projects.
-
-Current functionality is limited to committing files to groups of repos simultaneously.
+Synchronise (via creates/updates) files across all projects within a gitlab group.
 
 ## Getting Started
 
-```
-# Create the file(s) you want to push to all repos
-# Create a .ggm.yml 
+### An example gitlab job
 
-# Mount those files in the container, provide a valid token, set DRY_RUN for safety
+NOTE: See [examples/hello-world](examples/hello-world/README.md) for a complete example
+
+```
+stages:
+  - run-ggm
+
+# Requires a CI/CD Variable (GITLAB_TOKEN) to be set
+# Reads the config from the default location (.ggm.yaml)
+manage-gitlab-group:
+  stage: run-ggm
+  image: thpdev/ggm:latest
+  script: ggm
+```
+
+### Run the GGM container locally 
+
+- NOTE: DRY_RUN enabled, so nothing destructive can happen
+
+```
 docker run -it --rm -v $(pwd):/usr/src/data -e GITLAB_TOKEN="your gitlab token" -e DRY_RUN=true thpdev/ggm:latest
 ```
 

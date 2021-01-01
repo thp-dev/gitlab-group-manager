@@ -1,0 +1,9 @@
+stages:
+  - run-ggm
+
+# Requires a CI/CD (GITLAB_TOKEN) to be set
+# Reads the config from the default location (.ggm.yaml)
+manage-gitlab-group:
+  stage: run-ggm
+  image: thpdev/ggm:latest
+  script: ggm
