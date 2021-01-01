@@ -1,0 +1,6 @@
+groups:
+  - name: Example Group
+    include_subgroups: false
+    archived: false
+    files: 
+      - path: spec/fixtures/hello.md
