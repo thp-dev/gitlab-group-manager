@@ -1,0 +1,13 @@
+version: "3"
+services:
+  dev:
+    build:
+      context: ./
+    image: 'thp-dev/ggm'
+    volumes:
+      - ./:/usr/src/app/
+    restart: unless-stopped
+    environment:
+      - CI_API_V4_URL=https://gitlab.com/api/v4
+      - GITLAB_TOKEN=$GITLAB_TOKEN
+    command: ["sleep", "infinity"]
