@@ -1,0 +1,23 @@
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+jobs:
+  release-docker-image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set env
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+      - name: Test
+        run: |
+          echo $RELEASE_VERSION
+          echo ${{ env.RELEASE_VERSION }}
+      - name: Docker image retag
+        uses: tinact/docker.image-retag@1.0.2
+        with:
+          image_name: thpdev/ggm
+          image_old_tag: latest
+          image_new_tag: ${{ env.RELEASE_VERSION }}
+          registry_username: ${{ secrets.DOCKERHUB_USERNAME }}
+          registry_password: ${{ secrets.DOCKERHUB_TOKEN }}
