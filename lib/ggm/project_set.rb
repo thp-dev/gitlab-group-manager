@@ -54,7 +54,9 @@ module GGM
     end
 
     def file_commit(project, branch, file, action)
-      message = "#{action.capitalize}d file: #{file.location}"
+      commit_message_prefix = file.options[:commit_prefix]
+      commit_message_suffix = file.options[:commit_suffix]
+      message = "#{commit_message_prefix}#{action.capitalize}d file: #{file.location}#{commit_message_suffix}"
       dry_runnable("Add commit with message: #{message}") do
         GGM.gitlab_client.create_commit(project.id, branch, message,
                                         [{ action: action, file_path: file.location, content: file.content }])

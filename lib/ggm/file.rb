@@ -6,12 +6,13 @@ module GGM
   # A wrapper for files that could be remote/local
   # TODO: Support other types of file (http(s), github, gitlab etc.)
   class File
-    attr_reader :content, :sha256sum, :uri
+    attr_reader :content, :sha256sum, :uri, :options
 
-    def initialize(uri)
+    def initialize(uri, options: {})
       @uri = uri
       @content = ::File.read(@uri)
       @sha256sum = Digest::SHA256.hexdigest(@content)
+      @options = options
     end
 
     def exists?(project, project_path: @uri, branch: 'master')
