@@ -23,6 +23,16 @@ describe GGM::File do
         expect(file.uri).to eq('spec/fixtures/hello.md')
       end
     end
+
+    context 'with commit message options' do
+      subject(:file) { described_class.new('spec/fixtures/hello.md', options: expected_options) }
+
+      let(:expected_options) { { commit_prefix: 'Hello ', commit_suffix: ' World' } }
+
+      it 'stores the options' do
+        expect(file.options).to eq(expected_options)
+      end
+    end
   end
 
   describe '#location' do

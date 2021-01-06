@@ -4,3 +4,4 @@ groups:
     archived: false
     files: 
       - path: hello.md
+        commit_suffix: ' [skip ci]'

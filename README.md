@@ -6,9 +6,21 @@ Synchronise (via creates/updates) files across all projects within a gitlab grou
 
 ## Getting Started
 
-### An example gitlab job
+NOTE: See [examples/hello-world](examples/hello-world) for a complete example
 
-NOTE: See [examples/hello-world](examples/hello-world/README.md) for a complete example
+### An example ggm config file
+
+```
+groups:
+  - name: Example Group
+    include_subgroups: false
+    archived: false
+    files: 
+      - path: .gitlab/merge_request_templates/Default.md
+        commit_suffix: ' [skip ci]'
+```
+
+### An example gitlab job
 
 ```
 stages:
@@ -19,6 +31,8 @@ stages:
 manage-gitlab-group:
   stage: run-ggm
   image: thpdev/ggm:latest
+  variables:
+    DRY_RUN: true
   script: ggm
 ```
 
