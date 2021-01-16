@@ -25,9 +25,13 @@ module GGM
     end
 
     def initialize(name)
-      @value = ENV[name].to_s.downcase
-      @value = true if TRUTHY_VALUES.include?(@value.to_s)
-      @value = false if FALSEY_VALUES.include?(@value.to_s)
+      if ENV[name].nil?
+        @value = nil
+        return
+      end
+      @value = ENV[name].to_s
+      @value = true if TRUTHY_VALUES.include?(@value.to_s.downcase)
+      @value = false if FALSEY_VALUES.include?(@value.to_s.downcase)
     end
   end
 end
