@@ -13,7 +13,8 @@ NOTE: See [examples/hello-world](examples/hello-world) for a complete example
 ```
 groups:
   - name: Example Group
-    include_subgroups: false
+    excluded_subgroups:
+      - 'SubGroup 1'
     archived: false
     files: 
       - path: .gitlab/merge_request_templates/Default.md

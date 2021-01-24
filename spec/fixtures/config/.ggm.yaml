@@ -1,6 +1,5 @@
 groups:
   - name: Test Group
-    include_subgroups: false
     archived: false
     files: 
       - path: spec/fixtures/test.md
