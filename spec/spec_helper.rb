@@ -16,10 +16,18 @@ module GitlabMocks
   let(:mock_gitlab_error_response) { instance_double('gitlab_error_response') }
   let(:mock_gitlab_request) { instance_double('gitlab_request') }
   let(:mock_groups_response) { instance_double('groups_response') }
+  let(:mock_group_subgroups_response) { instance_double('group_subgroup_response') }
   let(:mock_group_projects_response) { instance_double('group_projects_response') }
 
   let(:mock_groups) do
     [Gitlab::ObjectifiedHash.new({ id: '12345', name: 'Test Group' })]
+  end
+
+  let(:mock_subgroups) do
+    [
+      Gitlab::ObjectifiedHash.new({ id: '123', name: 'Test SubGroup 1' }),
+      Gitlab::ObjectifiedHash.new({ id: '456', name: 'Test SubGroup 2' })
+    ]
   end
 
   let(:mock_group_projects) do
@@ -37,6 +45,11 @@ module GitlabMocks
   def with_gitlab_groups_response_success
     allow(mock_gitlab_client).to receive(:groups).and_return(mock_groups_response)
     allow(mock_groups_response).to receive(:auto_paginate).and_return(mock_groups)
+  end
+
+  def with_gitlab_group_subgroups_response_success
+    allow(mock_gitlab_client).to receive(:group_subgroups).and_return(mock_group_subgroups_response)
+    allow(mock_group_subgroups_response).to receive(:auto_paginate).and_return(mock_subgroups)
   end
 
   def with_gitlab_group_projects_response_success

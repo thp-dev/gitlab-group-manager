@@ -35,17 +35,46 @@ module GGM
       raise GGM::ConfigError, 'Missing "groups" section' unless @config['groups']
 
       @config['groups'].map do |group_config|
-        group = validate_group(group_config['name'])
-        projects = GGM.gitlab_client.group_projects(group.id, project_selection_options(group_config))
-                      .auto_paginate.sort_by(&:name)
+        group, subgroups = groups_and_subgroups(group_config)
+        projects = filter_subgroup_projects(subgroups, group_config)
+        projects += GGM.gitlab_client.group_projects(group.id, project_selection_options(group_config))
+                       .auto_paginate
+        projects.sort_by!(&:name)
         config_to_apply = group_config.slice('files')
         [ProjectSet.new(projects), config_to_apply]
       end
     end
 
+    def groups_and_subgroups(group_config)
+      group = validate_group(group_config['name'])
+      subgroups = GGM.gitlab_client.group_subgroups(group.id).auto_paginate.sort_by(&:name)
+      [group, subgroups]
+    end
+
+    def filter_subgroup_projects(subgroups, group_config)
+      projects = []
+
+      subgroups.each do |subgroup|
+        next if excluded_subgroup?(subgroup, group_config)
+
+        projects += GGM.gitlab_client
+                       .group_projects(subgroup.id, project_selection_options(group_config))
+                       .auto_paginate
+      end
+
+      projects
+    end
+
+    def excluded_subgroup?(subgroup, group_config)
+      group_config['excluded_subgroups']&.each do |subgroup_regex|
+        return true unless (subgroup.name =~ /#{subgroup_regex}/).nil?
+      end
+      false
+    end
+
     def project_selection_options(group_config)
       {
-        include_subgroups: group_config['include_subgroups'] || false,
+        include_subgroups: false,
         archived: group_config['archived'] || false
       }
     end

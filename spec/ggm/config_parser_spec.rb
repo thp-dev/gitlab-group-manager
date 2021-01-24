@@ -5,6 +5,7 @@ describe GGM::ConfigParser do
     with_mock_gitlab_client
     with_gitlab_groups_response_success
     with_gitlab_group_projects_response_success
+    with_gitlab_group_subgroups_response_success
   end
 
   describe '#new' do
@@ -16,7 +17,6 @@ describe GGM::ConfigParser do
           'groups' =>
             [{ 'name' => 'Test Group',
                'archived' => false,
-               'include_subgroups' => false,
                'files' => [{ 'path' => 'spec/fixtures/test.md' },
                            { 'path' => 'spec/fixtures/another.md' }] }]
         }
