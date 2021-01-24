@@ -14,6 +14,8 @@ module GGM
     def initialize(config_file_path: '.ggm.yaml')
       @config = YAML.load_file(config_file_path)
       @project_set_configs = build_project_config_tuple
+    rescue StandardError => e
+      raise GGM::ConfigError, e
     end
 
     def apply

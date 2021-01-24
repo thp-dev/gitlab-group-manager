@@ -120,7 +120,6 @@ describe 'Integration Tests' do
     end
   end
 
-
   context 'with all subgroups excluded' do
     let(:basic_config) do
       { 'groups' => [
