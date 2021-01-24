@@ -1,7 +1,13 @@
 groups:
+  # Name of the group to operate on, must match exactly
   - name: Example Group
-    include_subgroups: false
+    # Each entry in the excluded_subgroups array is a regex, any subgroup name that matches is excluded
+    excluded_subgroups: 
+      # Exclude all subgroups 
+      - '.*'
+    # exclude archived projects
     archived: false
     files: 
-      - path: hello.md
+      - path: shared-files/hello.md
+        # Add the following string to the end of any commits related to this file
         commit_suffix: ' [skip ci]'
