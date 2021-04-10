@@ -28,8 +28,7 @@ describe 'Integration Tests' do
   end
 
   after do
-    Gitlab.delete_group(@group.id)
-    sleep 5
+    delete_group_and_wait(@group.id)
   end
 
   context 'with basic config for a single file' do

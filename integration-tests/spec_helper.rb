@@ -15,3 +15,17 @@ end
 def run_ggm
   Dir.chdir('/tmp') { puts `'ggm'` }
 end
+
+# deletes a gitlab group, and wait for it to be properly removed
+def delete_group_and_wait(group_id)
+  group_still_exists = true
+  Gitlab.delete_group(group_id)
+  while group_still_exists
+    begin
+      Gitlab.group(group_id)
+      sleep 1
+    rescue StandardError
+      group_still_exists = false
+    end
+  end
+end
