@@ -20,13 +20,9 @@ module GGM
 
     def apply
       @project_set_configs.each do |project_set, config|
-        config['files'].each do |file_config|
-          options = {
-            commit_prefix: file_config['commit_prefix'] || nil,
-            commit_suffix: file_config['commit_suffix'] || nil
-          }
-          file = GGM::File.new(file_config['path'], options: options)
-          project_set.ensure_file(file)
+        config.keys.map do |config_key|
+          configurable = Object.const_get("GGM::Configurable::#{config_key.capitalize}")
+          configurable&.new&.configure(project_set, config[config_key])
         end
       end
     end

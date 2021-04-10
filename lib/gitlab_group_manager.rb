@@ -36,6 +36,4 @@ module GGM
   end
 end
 
-require_relative 'ggm/file'
-require_relative 'ggm/config_parser'
-require_relative 'ggm/project_set'
+Dir["#{__dir__}/ggm/**/*.rb"].each { |file| require_relative file }
