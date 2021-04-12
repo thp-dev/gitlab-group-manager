@@ -12,6 +12,12 @@ module GGM
     @dry_run ||= Env['DRY_RUN']
   end
 
+  def self.dry_runnable(output)
+    yield unless GGM.dry_run
+
+    puts "#{GGM.dry_run ? 'DRY RUN: ' : ''}#{output}"
+  end
+
   # Better docs for Env TODO
   class Env
     TRUTHY_VALUES = %w[t true yes y 1].freeze

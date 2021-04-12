@@ -2,9 +2,12 @@
 
 ![CI](https://github.com/thp-dev/gitlab-group-manager/workflows/CI/badge.svg)
 
-Synchronise (via creates/updates) files across all projects within a gitlab group.
-
+Keeping gitlab project settings consistent in an organisation can be challenging. Gitlab Group Manager gives teams the ability to define common settings and files across all the projects in a group. 
 ## Getting Started
+
+GGM can be run from anywhere you can run docker, but it's well suited to being run in a gitlab CI job.
+
+All you need is a `.ggm.yaml` config file, which identifies the group(s) to manage and the settings/files to apply to the projects in that group.
 
 NOTE: See [examples/hello-world](examples/hello-world) for a complete example
 
@@ -19,6 +22,9 @@ groups:
     files: 
       - path: .gitlab/merge_request_templates/Default.md
         commit_suffix: ' [skip ci]'
+    merge_request_approvals:
+      approvals_before_merge: 3,
+      disable_overriding_approvers_per_merge_request: true
 ```
 
 ### An example gitlab job

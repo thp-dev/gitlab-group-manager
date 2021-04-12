@@ -20,14 +20,21 @@ module GGM
 
     def apply
       @project_set_configs.each do |project_set, config|
-        config.keys.map do |config_key|
-          configurable = Object.const_get("GGM::Configurable::#{config_key.capitalize}")
+        config.each_key do |config_key|
+          configurable = configurable_for_config_key(config_key)
           configurable&.new&.configure(project_set, config[config_key])
         end
       end
     end
 
     private
+
+    def configurable_for_config_key(config_key)
+      class_name = config_key.split('_').map(&:capitalize).join
+      Object.const_get("GGM::Configurable::#{class_name}")
+    rescue NameError
+      nil
+    end
 
     def build_project_config_tuple
       raise GGM::ConfigError, 'Missing "groups" section' unless @config['groups']
@@ -38,8 +45,7 @@ module GGM
         projects += GGM.gitlab_client.group_projects(group.id, project_selection_options(group_config))
                        .auto_paginate
         projects.sort_by!(&:name)
-        config_to_apply = group_config.slice('files')
-        [ProjectSet.new(projects), config_to_apply]
+        [ProjectSet.new(projects), group_config]
       end
     end
 

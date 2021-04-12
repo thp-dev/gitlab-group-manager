@@ -7,7 +7,16 @@ groups:
       - '.*'
     # exclude archived projects
     archived: false
+    # ensure all projects contain the files listed below
     files: 
       - path: shared-files/hello.md
         # Add the following string to the end of any commits related to this file
         commit_suffix: ' [skip ci]'
+    # apply the same merge request approval config to all seleected projects
+    merge_request_approvals:
+      approvals_before_merge: 1
+      reset_approvals_on_push: true
+      disable_overriding_approvers_per_merge_request: true
+      merge_requests_author_approval: false
+      merge_requests_disable_committers_approval: true
+      require_password_to_approve: false

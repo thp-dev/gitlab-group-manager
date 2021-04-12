@@ -190,5 +190,30 @@ describe 'Integration Tests' do
       end
     end
   end
+
+  context 'with merge request approval configuration' do
+    let(:basic_config) do
+      { 'groups' => [
+        { 'name' => @group.name,
+          'archived' => false,
+          'merge_request_approvals' => {} }
+      ] }.to_yaml
+    end
+
+    before do
+      File.open('/tmp/.ggm.yaml', 'w') { |file| file.write(basic_config) }
+    end
+
+    it 'sets the default merge request approval configuration on each project' do
+      run_ggm
+
+      @projects.each do |project|
+        merge_request_approval_config = Gitlab.project_merge_request_approvals(project.id).to_hash
+        expect(merge_request_approval_config).to include(
+          GGM::Configurable::MergeRequestApprovals::DEFAULT_MERGE_APPROVAL_CONFIG
+        )
+      end
+    end
+  end
 end
 # rubocop:enable RSpec/ExampleLength, RSpec/MultipleExpectations, RSpec/InstanceVariable, RSpec/DescribeClass

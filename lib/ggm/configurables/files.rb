@@ -16,12 +16,6 @@ module GGM
         end
       end
 
-      def dry_runnable(output)
-        yield unless GGM.dry_run
-
-        puts "#{GGM.dry_run ? 'DRY RUN: ' : ''}#{output}"
-      end
-
       def ensure_file(file)
         @project_set.projects.each do |project|
           in_project = file.exists_and_matches?(project)
@@ -49,7 +43,7 @@ module GGM
         commit_message_prefix = file.options[:commit_prefix]
         commit_message_suffix = file.options[:commit_suffix]
         message = "#{commit_message_prefix}#{action.capitalize}d file: #{file.location}#{commit_message_suffix}"
-        dry_runnable("Add commit with message: #{message}") do
+        GGM.dry_runnable("Add commit with message: #{message}") do
           GGM.gitlab_client.create_commit(project.id, branch, message,
                                           [{ action: action, file_path: file.location, content: file.content }])
         end
@@ -68,7 +62,7 @@ module GGM
       end
 
       def safe_unprotect(project, branch)
-        dry_runnable("Unprotect #{branch} in #{project.name}") do
+        GGM.dry_runnable("Unprotect #{branch} in #{project.name}") do
           GGM.gitlab_client.unprotect_branch(project.id, branch)
         end
       end
@@ -76,7 +70,7 @@ module GGM
       def safe_protect(project, branch, branch_state)
         return unless branch_state
 
-        dry_runnable("Re-protect #{branch} in #{project.name}") do
+        GGM.dry_runnable("Re-protect #{branch} in #{project.name}") do
           GGM.gitlab_client.protect_branch(project.id, branch, branch_state)
         end
       end
