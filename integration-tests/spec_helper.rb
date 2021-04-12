@@ -16,16 +16,20 @@ def run_ggm
   Dir.chdir('/tmp') { puts `'ggm'` }
 end
 
-# deletes a gitlab group, and wait for it to be properly removed
-def delete_group_and_wait(group_id)
-  group_still_exists = true
-  Gitlab.delete_group(group_id)
-  while group_still_exists
-    begin
-      Gitlab.group(group_id)
-      sleep 1
+def delete_projects(projects)
+  projects.each do |project|
+    Gitlab.delete_project(project.id)
+  end
+  wait_for_projects_to_be_deleted(projects)
+end
+
+def wait_for_projects_to_be_deleted(projects)
+  while projects.length.positive?
+    projects.each do |project|
+      Gitlab.project(project.id)
     rescue StandardError
-      group_still_exists = false
+      projects.delete(project)
     end
+    sleep 1
   end
 end

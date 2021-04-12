@@ -35,7 +35,8 @@ jobs:
         run: docker-compose up -d
         env:
           GITLAB_TOKEN: ${{ secrets.GITLAB_TOKEN }}
-          INTEGRATION_TEST_PARENT_GROUP_ID: ${{ secrets.INTEGRATION_TEST_PARENT_GROUP_ID }}
+          INTEGRATION_TEST_GROUP_ID: ${{ secrets.INTEGRATION_TEST_GROUP_ID }}
+          INTEGRATION_TEST_SUB_GROUPS: ${{ secrets.INTEGRATION_TEST_SUB_GROUPS }}
       - name: Enable test gems
         run: docker-compose exec -T dev bundle config --delete without
       - name: Install gems

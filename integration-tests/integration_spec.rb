@@ -10,25 +10,24 @@ require 'yaml'
 describe 'Integration Tests' do
   before do
     Gitlab.private_token = ENV['GITLAB_TOKEN']
-    @group = Gitlab.create_group('Integration Test Group', 'integration-test-group',
-                                 { parent_id: ENV['INTEGRATION_TEST_PARENT_GROUP_ID'] })
+    @group = Gitlab.group(ENV['INTEGRATION_TEST_GROUP_ID'])
     @projects = 3.times.map do |i|
       Gitlab.create_project("project#{i}", { namespace_id: @group.id })
     end
-
-    @sub_groups_and_projects = 3.times.map do |i|
-      group = Gitlab.create_group("Integration Test SubGroup #{i}",
-                                  "integration-test-subgroup-#{i}",
-                                  { parent_id: @group.id })
+    @all_projects = @projects
+    subgroups = ENV['INTEGRATION_TEST_SUB_GROUPS'].split(',')
+    @sub_groups_and_projects = subgroups.each_with_index.map do |subgroup_id, i|
+      group = Gitlab.group(subgroup_id)
       projects = 2.times.map do |j|
         Gitlab.create_project("sub-group-#{i}-project#{j}", { namespace_id: group.id })
       end
+      @all_projects += projects
       { group: group, projects: projects }
     end
   end
 
   after do
-    delete_group_and_wait(@group.id)
+    delete_projects(@all_projects)
   end
 
   context 'with basic config for a single file' do

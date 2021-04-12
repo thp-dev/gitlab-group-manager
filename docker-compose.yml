@@ -10,6 +10,7 @@ services:
     environment:
       - CI_API_V4_URL=https://gitlab.com/api/v4
       - GITLAB_TOKEN=$GITLAB_TOKEN
-      - INTEGRATION_TEST_PARENT_GROUP_ID=$INTEGRATION_TEST_PARENT_GROUP_ID
+      - INTEGRATION_TEST_GROUP_ID=$INTEGRATION_TEST_GROUP_ID
+      - INTEGRATION_TEST_SUB_GROUPS=$INTEGRATION_TEST_SUB_GROUPS
     working_dir: /usr/src/app
     command: ["sleep", "infinity"]
